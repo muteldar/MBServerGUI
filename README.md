@@ -7,6 +7,8 @@ Mount & Blade Warband Server GUI is just that a UI created to help start/run Mou
 
 ##What Works Now
 
+- Can Launch server with module and game mode selected.
+- No Settings are available at this point.
 
 ##Screen Shot
 
@@ -17,7 +19,7 @@ Mount & Blade Warband Server GUI is just that a UI created to help start/run Mou
 
 ##Running from source
 
-C# based application using the following from NuGet
+C# WPF based application using the following from NuGet
 - [SQL Lite](http://www.nuget.org/packages/system.data.sqlite)
 
 You will also need a local copy of the dedicated server files from TaleWorlds
