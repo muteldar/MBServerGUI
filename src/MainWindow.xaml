@@ -16,10 +16,6 @@
         <ComboBox x:Name="ModuleComboBox" HorizontalAlignment="Left" Padding="5" Margin="710,60,0,0" Height="30" VerticalAlignment="Top" Width="204" SelectedIndex="0"/>
         <ComboBox x:Name="GameModeComboBox" DisplayMemberPath="DisplayName" SelectedValuePath="Value" HorizontalAlignment="Left" Padding="5" Margin="710,120,0,0" Height="30" VerticalAlignment="Top" Width="204" SelectedIndex="0"/>
         <Menu x:Name="WindowMenu" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" Width="950" Background="{x:Null}" FontFamily="Ubuntu" FontSize="14" BorderBrush="White" BorderThickness="0,0,0,1">
-            <MenuItem x:Name="FileMenuItem" Header="File" Padding="5" Foreground="White" BorderBrush="{x:Null}">
-                <MenuItem Header="Open Server Config" Background="{x:Null}" Foreground="Black" Click="Open_Serverconfig"/>
-                <MenuItem Header="Save Server Config" Background="{x:Null}" Foreground="Black" Click="Save_Serverconfig"/>
-            </MenuItem>
             <MenuItem x:Name="AboutMenuItem" Header="About" Padding="5" Foreground="White" BorderBrush="{x:Null}" Click="About_Click"/>
         </Menu>
         <Label x:Name="ServerSettingsLabel" Content="Server Settings" HorizontalAlignment="Left" Padding="5" Margin="5,154,0,0" VerticalAlignment="Top" FontFamily="Ubuntu" FontSize="14"  Foreground="White" RenderTransformOrigin="0.767,0.654"/>

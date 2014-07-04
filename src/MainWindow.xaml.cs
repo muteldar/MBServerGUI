@@ -146,16 +146,6 @@ namespace Mount_and_Blade_Server_Panel
             }
         }
 
-        private void Open_Serverconfig(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Clicked Open Server Config");
-        }
-
-        private void Save_Serverconfig(object sender, RoutedEventArgs e)
-        {
-            
-        }
-
         /// <summary>
         /// 
         /// </summary>
