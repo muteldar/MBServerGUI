@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mount and Blade Server Panel", "src\Mount and Blade Server Panel.csproj", "{2BF760B8-E67A-4DC8-BAB7-E025E3FE784B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2BF760B8-E67A-4DC8-BAB7-E025E3FE784B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BF760B8-E67A-4DC8-BAB7-E025E3FE784B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BF760B8-E67A-4DC8-BAB7-E025E3FE784B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BF760B8-E67A-4DC8-BAB7-E025E3FE784B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

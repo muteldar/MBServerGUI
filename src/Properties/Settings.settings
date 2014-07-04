@@ -1,0 +1,26 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Mount_and_Blade_Server_Panel.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="ModulesLocation" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="ServerExeLocation" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Debug" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="SettingsConnectionString" Type="(Connection string)" Scope="Application">
+      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;ConnectionString&gt;data source="D:\n00bworks\MBserverGUI\Code\v1.0\Mount and Blade Server Panel\Settings.db"&lt;/ConnectionString&gt;
+  &lt;ProviderName&gt;System.Data.SQLite&lt;/ProviderName&gt;
+&lt;/SerializableConnectionString&gt;</DesignTimeValue>
+      <Value Profile="(Default)">data source="D:\n00bworks\MBserverGUI\Code\v1.0\Mount and Blade Server Panel\Settings.db"</Value>
+    </Setting>
+    <Setting Name="ConfigName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">serverconfig.mbconf</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

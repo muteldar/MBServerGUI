@@ -1,0 +1,38 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Properties="clr-namespace:Mount_and_Blade_Server_Panel.Properties" x:Class="Mount_and_Blade_Server_Panel.MainWindow"
+        Title="Mount and Blade Server GUI" Height="550" Width="950" Loaded="Window_Loaded" WindowStyle="ToolWindow" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" 
+            FontFamily="Ubuntu" FontSize="14"  Icon="MB.ico">
+    <Grid Background="#FF555555">
+        <Label x:Name="ServerEXElabel" Content="Server EXE Location" Padding="5" Margin="5,30,0,0" HorizontalAlignment="Left" FontFamily="Ubuntu" FontSize="14"  Foreground="White"/>
+        <Label x:Name="ModulesFolderlabel" Content="Module Folder Location" Padding="5" Margin="5,90,0,0" HorizontalAlignment="Left" FontFamily="Ubuntu" FontSize="14"  Foreground="White"/>
+        <TextBox x:Name="ServerEXETextBox" Height="30" Margin="10,60,0,0" TextWrapping="Wrap" Text="Double Click to select" Width="670" Background="#FF707070" Foreground="White" FontFamily="Ubuntu" Padding="5" FontSize="14" SelectionBrush="#FF314151" MouseDoubleClick="ServerEXETextBox_MouseDoubleClick" HorizontalScrollBarVisibility="Disabled" IsReadOnly="True" IsUndoEnabled="False" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+        <TextBox x:Name="ModulesTextBox" Height="30" Margin="10,120,0,0" TextWrapping="Wrap" Text="Double Click to select"  Width="670" Background="#FF707070" Foreground="White" FontFamily="Ubuntu" Padding="5" FontSize="14" SelectionBrush="#FF314151" MouseDoubleClick="ModuleTextBox_MouseDoubleClick" HorizontalScrollBarVisibility="Disabled" IsReadOnly="True" IsUndoEnabled="False" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+        <Label x:Name="ModuleComboLabel" Content="Module" HorizontalAlignment="Left" Padding="5" Margin="705,30,0,0" FontFamily="Ubuntu" FontSize="14" 
+               Foreground="White"/>
+        <Label x:Name="GameModeLabel" Content="Game Mode" HorizontalAlignment="Left" Padding="5" Margin="705,90,0,0" FontFamily="Ubuntu" FontSize="14" 
+               Foreground="White"/>
+        <ComboBox x:Name="ModuleComboBox" HorizontalAlignment="Left" Padding="5" Margin="710,60,0,0" Height="30" VerticalAlignment="Top" Width="204" SelectedIndex="0"/>
+        <ComboBox x:Name="GameModeComboBox" DisplayMemberPath="DisplayName" SelectedValuePath="Value" HorizontalAlignment="Left" Padding="5" Margin="710,120,0,0" Height="30" VerticalAlignment="Top" Width="204" SelectedIndex="0"/>
+        <Menu x:Name="WindowMenu" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" Width="950" Background="{x:Null}" FontFamily="Ubuntu" FontSize="14" BorderBrush="White" BorderThickness="0,0,0,1">
+            <MenuItem x:Name="FileMenuItem" Header="File" Padding="5" Foreground="White" BorderBrush="{x:Null}">
+                <MenuItem Header="Open Server Config" Background="{x:Null}" Foreground="Black" Click="Open_Serverconfig"/>
+                <MenuItem Header="Save Server Config" Background="{x:Null}" Foreground="Black" Click="Save_Serverconfig"/>
+            </MenuItem>
+            <MenuItem x:Name="AboutMenuItem" Header="About" Padding="5" Foreground="White" BorderBrush="{x:Null}" Click="About_Click"/>
+        </Menu>
+        <Label x:Name="ServerSettingsLabel" Content="Server Settings" HorizontalAlignment="Left" Padding="5" Margin="5,154,0,0" VerticalAlignment="Top" FontFamily="Ubuntu" FontSize="14"  Foreground="White" RenderTransformOrigin="0.767,0.654"/>
+        <!--<DataGrid x:Name="SettingsDataGrid" Height="300" Margin="10,181,576,41" FontWeight="Normal" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False" AlternatingRowBackground="#FFC3C3C3" RowBackground="White" AutoGenerateColumns="True"/>-->
+        <Button x:Name="StartButton" Content="Start" Margin="812,480,0,0" Width="100" FontSize="14" FontFamily="Ubuntu" Background="#FF999999" Foreground="White" Height="23" Click="StartButton_Click" RenderTransformOrigin="-0.07,-0.174"/>
+        <ListView x:Name="SettingsListView" Height="300" Margin="12,181,12,0" FontSize="14" FontFamily="Ubuntu" Background="White" Foreground="Black" VerticalAlignment="Top" SelectionMode="Single">
+            <ListView.View>
+                <GridView AllowsColumnReorder="False">
+                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Path=Name}"/>
+                    <GridViewColumn Header="Value" Width="100" DisplayMemberBinding="{Binding Path=Value}"/>
+                    <GridViewColumn Header="Description" DisplayMemberBinding="{Binding Path=Description}"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</Window>
