@@ -1,7 +1,7 @@
 ﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:Properties="clr-namespace:Mount_and_Blade_Server_Panel.Properties" x:Class="Mount_and_Blade_Server_Panel.MainWindow"
+        x:Class="Mount_and_Blade_Server_Panel.MainWindow"
         Title="Mount and Blade Server GUI" Height="550" Width="950" Loaded="Window_Loaded" WindowStyle="ToolWindow" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" 
             FontFamily="Ubuntu" FontSize="14"  Icon="MB.ico">
     <Grid Background="#FF555555">

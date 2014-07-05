@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Data;
-using System.Data.SQLite;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -22,17 +18,17 @@ namespace Mount_and_Blade_Server_Panel
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         private readonly Process _serverProcess = new Process();
-        public string serverConfig = String.Empty;
+        public string ServerConfig = String.Empty;
 
         public MainWindow()
         {
             InitializeComponent();
             GetModules();
             Populate_GameModes();
-            Populate_ListGrid();
+            Populate_ListView();
         }
         /// <summary>
         /// Set Server EXE on double click
@@ -46,7 +42,6 @@ namespace Mount_and_Blade_Server_Panel
             if (result == true)
             {
                 ServerEXETextBox.Text = dialog.FileName;
-                var fileName = new FileInfo(dialog.FileName);
                 Settings.Default.ServerExeLocation = ServerEXETextBox.Text;
             }
         }
@@ -62,7 +57,7 @@ namespace Mount_and_Blade_Server_Panel
             if (result == System.Windows.Forms.DialogResult.OK)
             {
                 ModulesTextBox.Text = dialog.SelectedPath;
-                Properties.Settings.Default.ModulesLocation = ModulesTextBox.Text;
+                Settings.Default.ModulesLocation = ModulesTextBox.Text;
                 GetModules();
             }
         }
@@ -91,11 +86,9 @@ namespace Mount_and_Blade_Server_Panel
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            var dbConn = new SQLiteConnection("Data Source=Settings.db; Version=3;");
-
             if (Settings.Default.ServerExeLocation != "")
             {
-                ServerEXETextBox.Text = Properties.Settings.Default.ServerExeLocation;
+                ServerEXETextBox.Text = Settings.Default.ServerExeLocation;
             }
 
             if (Settings.Default.ModulesLocation != "")
@@ -110,15 +103,15 @@ namespace Mount_and_Blade_Server_Panel
             Build_Settings();
             if (Settings.Default.Debug)
             {
-                MessageBox.Show(serverConfig);
+                MessageBox.Show(ServerConfig);
             }
             else
             {
                 _serverProcess.StartInfo.FileName = Settings.Default.ServerExeLocation;
 
-                if (serverConfig != String.Empty)
+                if (ServerConfig != String.Empty)
                 {
-                    _serverProcess.StartInfo.Arguments = "-r " + serverConfig + " -m " + ModuleComboBox.SelectedItem;
+                    _serverProcess.StartInfo.Arguments = "-r " + ServerConfig + " -m " + ModuleComboBox.SelectedItem;
                     _serverProcess.EnableRaisingEvents = true;
                     _serverProcess.Exited += ServerProcess_Exited;
                     try
@@ -135,6 +128,7 @@ namespace Mount_and_Blade_Server_Panel
             }
         }
 
+
         private void ServerProcess_Exited(object sender, EventArgs e)
         {
             if (!Dispatcher.CheckAccess())
@@ -147,7 +141,7 @@ namespace Mount_and_Blade_Server_Panel
         }
 
         /// <summary>
-        /// 
+        /// Show current build version of Assembly as an "About".
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -168,9 +162,9 @@ namespace Mount_and_Blade_Server_Panel
         }
 
         /// <summary>
-        /// 
+        /// Populate ListView with settings from the DB.
         /// </summary>
-        private void Populate_ListGrid()
+        private void Populate_ListView()
         {
             var settingsAdapter = new ServerSettingsDataSet();
             var settingsTableAdapter = new ServerSettingsTableAdapter();
@@ -178,14 +172,12 @@ namespace Mount_and_Blade_Server_Panel
             foreach (DataRowView row in settingsAdapter.ServerSettings.DefaultView)
             {
                 SettingsListView.Items.Add(row);
-                //if (row["Type"].ToString().ToLower() == "bool")
-                //{
-                //    SettingsListView.Items.Add(row);
-                //}
             }
-            //SettingsListView.ItemsSource = settingsAdapter.ServerSettings.DefaultView;
         }
 
+        /// <summary>
+        /// Build Settings into the config file for server launch.
+        /// </summary>
         private void Build_Settings()
         {
             if (Settings.Default.ServerExeLocation != "" && Settings.Default.ModulesLocation != "")
@@ -197,10 +189,10 @@ namespace Mount_and_Blade_Server_Panel
                         write.WriteLine("set_mission " + GameModeComboBox.SelectedValue);
                         foreach (DataRowView row in SettingsListView.Items)
                         {
-                            write.WriteLine(row["Name"].ToString() + " " + row["Value"].ToString());
+                            write.WriteLine(row["Name"] + " " + row["Value"]);
                         }
                     }
-                    serverConfig = "serverconfig.mbconf";
+                    ServerConfig = "serverconfig.mbconf";
                 }
             }
         }
