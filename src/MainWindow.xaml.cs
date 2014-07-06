@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.IO;
@@ -10,6 +11,7 @@ using System.Windows.Threading;
 using Mount_and_Blade_Server_Panel.GameModesDataSetTableAdapters;
 using Mount_and_Blade_Server_Panel.Properties;
 using Mount_and_Blade_Server_Panel.ServerSettingsDataSetTableAdapters;
+using Application = System.Windows.Application;
 using MessageBox = System.Windows.MessageBox;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 
@@ -22,13 +24,13 @@ namespace Mount_and_Blade_Server_Panel
     {
         private readonly Process _serverProcess = new Process();
         public string ServerConfig = String.Empty;
+        private SettingsPopup settingsPopup;
 
         public MainWindow()
         {
             InitializeComponent();
             GetModules();
             Populate_GameModes();
-            Populate_ListView();
         }
         /// <summary>
         /// Set Server EXE on double click
@@ -119,6 +121,8 @@ namespace Mount_and_Blade_Server_Panel
                         WindowState = WindowState.Minimized;
                         _serverProcess.Start();
                         StartButton.IsEnabled = false;
+                        AddSettingButton.IsEnabled = false;
+                        RemoveSettingButton.IsEnabled = false;
                     }
                     catch
                     {
@@ -128,7 +132,11 @@ namespace Mount_and_Blade_Server_Panel
             }
         }
 
-
+        /// <summary>
+        /// Handle exit of the MB server exe reactivate buttons that have been blocked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ServerProcess_Exited(object sender, EventArgs e)
         {
             if (!Dispatcher.CheckAccess())
@@ -137,6 +145,10 @@ namespace Mount_and_Blade_Server_Panel
                     () => WindowState = WindowState.Normal, DispatcherPriority.Normal);
                 Dispatcher.Invoke(
                     () => StartButton.IsEnabled = true, DispatcherPriority.Normal);
+                Dispatcher.Invoke(
+                    () => AddSettingButton.IsEnabled = true, DispatcherPriority.Normal);
+                Dispatcher.Invoke(
+                    () => RemoveSettingButton.IsEnabled = true, DispatcherPriority.Normal);
             }
         }
 
@@ -151,7 +163,7 @@ namespace Mount_and_Blade_Server_Panel
         }
 
         /// <summary>
-        /// 
+        /// Populate GameMode dropdown from the DB.
         /// </summary>
         private void Populate_GameModes()
         {
@@ -162,16 +174,34 @@ namespace Mount_and_Blade_Server_Panel
         }
 
         /// <summary>
-        /// Populate ListView with settings from the DB.
+        /// 
         /// </summary>
-        private void Populate_ListView()
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Add_SettingClick(object sender, RoutedEventArgs e)
         {
-            var settingsAdapter = new ServerSettingsDataSet();
-            var settingsTableAdapter = new ServerSettingsTableAdapter();
-            settingsTableAdapter.Fill(settingsAdapter.ServerSettings);
-            foreach (DataRowView row in settingsAdapter.ServerSettings.DefaultView)
+            if (settingsPopup == null)
             {
-                SettingsListView.Items.Add(row);
+                settingsPopup = new SettingsPopup();
+                settingsPopup.Show();
+                settingsPopup.Closed += SettingsPop_Closed;
+            }
+            else if (settingsPopup != null)
+            {
+                settingsPopup.Activate();
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Remove_SettingClick(object sender, RoutedEventArgs e)
+        {
+            if (SettingsListView.Items.Count != 0)
+            {
+                SettingsListView.Items.Remove(SettingsListView.SelectedItem);
             }
         }
 
@@ -195,6 +225,32 @@ namespace Mount_and_Blade_Server_Panel
                     ServerConfig = "serverconfig.mbconf";
                 }
             }
+        }
+
+        /// <summary>
+        /// Close any popups that may exist when exiting main window.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Window_Exit(object sender, CancelEventArgs e)
+        {
+            foreach (Window window in Application.Current.Windows)
+            {
+                if (window.GetType() == typeof (SettingsPopup))
+                {
+                    window.Close();   
+                }
+            }
+        }
+
+        /// <summary>
+        /// Fire when settings popup has been closed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SettingsPop_Closed(object sender, EventArgs e)
+        {
+            settingsPopup = null;
         }
     }
 }

@@ -59,17 +59,6 @@ namespace Mount_and_Blade_Server_Panel.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("data source=\"D:\\n00bworks\\MBserverGUI\\Code\\v1.0\\Mount and Blade Server Panel\\Sett" +
-            "ings.db\"")]
-        public string SettingsConnectionString {
-            get {
-                return ((string)(this["SettingsConnectionString"]));
-            }
-        }
-        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("serverconfig.mbconf")]
@@ -79,6 +68,16 @@ namespace Mount_and_Blade_Server_Panel.Properties {
             }
             set {
                 this["ConfigName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("data source=\"Settings.db\"")]
+        public string SettingsConnectionString {
+            get {
+                return ((string)(this["SettingsConnectionString"]));
             }
         }
     }

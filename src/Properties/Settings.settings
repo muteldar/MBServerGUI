@@ -11,16 +11,16 @@
     <Setting Name="Debug" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="ConfigName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">serverconfig.mbconf</Value>
+    </Setting>
     <Setting Name="SettingsConnectionString" Type="(Connection string)" Scope="Application">
       <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;ConnectionString&gt;data source="D:\n00bworks\MBserverGUI\Code\v1.0\Mount and Blade Server Panel\Settings.db"&lt;/ConnectionString&gt;
+  &lt;ConnectionString&gt;data source="Settings.db"&lt;/ConnectionString&gt;
   &lt;ProviderName&gt;System.Data.SQLite&lt;/ProviderName&gt;
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
-      <Value Profile="(Default)">data source="D:\n00bworks\MBserverGUI\Code\v1.0\Mount and Blade Server Panel\Settings.db"</Value>
-    </Setting>
-    <Setting Name="ConfigName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">serverconfig.mbconf</Value>
+      <Value Profile="(Default)">data source="Settings.db"</Value>
     </Setting>
   </Settings>
 </SettingsFile>

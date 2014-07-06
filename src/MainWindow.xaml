@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         x:Class="Mount_and_Blade_Server_Panel.MainWindow"
         Title="Mount and Blade Server GUI" Height="550" Width="950" Loaded="Window_Loaded" WindowStyle="ToolWindow" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" 
-            FontFamily="Ubuntu" FontSize="14"  Icon="MB.ico">
+            FontFamily="Ubuntu" FontSize="14"  Icon="MB.ico" Closing="Window_Exit">
     <Grid Background="#FF555555">
         <Label x:Name="ServerEXElabel" Content="Server EXE Location" Padding="5" Margin="5,30,0,0" HorizontalAlignment="Left" FontFamily="Ubuntu" FontSize="14"  Foreground="White"/>
         <Label x:Name="ModulesFolderlabel" Content="Module Folder Location" Padding="5" Margin="5,90,0,0" HorizontalAlignment="Left" FontFamily="Ubuntu" FontSize="14"  Foreground="White"/>
@@ -19,9 +19,8 @@
             <MenuItem x:Name="AboutMenuItem" Header="About" Padding="5" Foreground="White" BorderBrush="{x:Null}" Click="About_Click"/>
         </Menu>
         <Label x:Name="ServerSettingsLabel" Content="Server Settings" HorizontalAlignment="Left" Padding="5" Margin="5,154,0,0" VerticalAlignment="Top" FontFamily="Ubuntu" FontSize="14"  Foreground="White" RenderTransformOrigin="0.767,0.654"/>
-        <!--<DataGrid x:Name="SettingsDataGrid" Height="300" Margin="10,181,576,41" FontWeight="Normal" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False" AlternatingRowBackground="#FFC3C3C3" RowBackground="White" AutoGenerateColumns="True"/>-->
-        <Button x:Name="StartButton" Content="Start" Margin="812,480,0,0" Width="100" FontSize="14" FontFamily="Ubuntu" Background="#FF999999" Foreground="White" Height="23" Click="StartButton_Click" RenderTransformOrigin="-0.07,-0.174"/>
-        <ListView x:Name="SettingsListView" Height="300" Margin="12,181,12,0" FontSize="14" FontFamily="Ubuntu" Background="White" Foreground="Black" VerticalAlignment="Top" SelectionMode="Single">
+        <Button x:Name="StartButton" Content="Start" Margin="812,480,0,0" Width="100" FontSize="14" FontFamily="Ubuntu" Background="#FF999999" Foreground="White" Height="23" Click="StartButton_Click"/>
+        <ListView x:Name="SettingsListView" Height="300" Margin="12,181,12,0" FontSize="14" FontFamily="Ubuntu" Background="White" Foreground="Black" VerticalAlignment="Top" SelectionMode="Single" x:FieldModifier="public">
             <ListView.View>
                 <GridView AllowsColumnReorder="False">
                     <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Path=Name}"/>
@@ -30,5 +29,7 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        <Button x:Name="AddSettingButton" Content="Add Setting" HorizontalAlignment="Left" FontSize="14" Width="100" Height="23"  FontFamily="Ubuntu" Background="#FF999999"  Foreground="White" Margin="12,480,0,0" Click="Add_SettingClick" />
+        <Button x:Name="RemoveSettingButton" Content="Remove Setting" HorizontalAlignment="Left" FontSize="14" Width="110" Height="23" FontFamily="Ubuntu" Background="#FF999999" Foreground="White" Margin="123,480,0,0" Click="Remove_SettingClick" />
     </Grid>
 </Window>
