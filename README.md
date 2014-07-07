@@ -13,7 +13,7 @@ Mount & Blade Warband Server GUI is just that a UI created to help start/run Mou
   * Settings still need to be validated 
   
 ##Good to Know 
-* there is no setting specific validation implemented yet. 
+* There is no setting specific validation implemented yet. 
 
 
 **Example**
