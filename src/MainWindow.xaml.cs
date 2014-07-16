@@ -10,7 +10,6 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using Mount_and_Blade_Server_Panel.GameModesDataSetTableAdapters;
 using Mount_and_Blade_Server_Panel.Properties;
-using Mount_and_Blade_Server_Panel.ServerSettingsDataSetTableAdapters;
 using Application = System.Windows.Application;
 using MessageBox = System.Windows.MessageBox;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
@@ -24,7 +23,7 @@ namespace Mount_and_Blade_Server_Panel
     {
         private readonly Process _serverProcess = new Process();
         public string ServerConfig = String.Empty;
-        private SettingsPopup settingsPopup;
+        private SettingsPopup _settingsPopup;
 
         public MainWindow()
         {
@@ -180,15 +179,15 @@ namespace Mount_and_Blade_Server_Panel
         /// <param name="e"></param>
         private void Add_SettingClick(object sender, RoutedEventArgs e)
         {
-            if (settingsPopup == null)
+            if (_settingsPopup == null)
             {
-                settingsPopup = new SettingsPopup();
-                settingsPopup.Show();
-                settingsPopup.Closed += SettingsPop_Closed;
+                _settingsPopup = new SettingsPopup();
+                _settingsPopup.Show();
+                _settingsPopup.Closed += SettingsPop_Closed;
             }
-            else if (settingsPopup != null)
+            else if (_settingsPopup != null)
             {
-                settingsPopup.Activate();
+                _settingsPopup.Activate();
             }
         }
 
@@ -250,7 +249,7 @@ namespace Mount_and_Blade_Server_Panel
         /// <param name="e"></param>
         private void SettingsPop_Closed(object sender, EventArgs e)
         {
-            settingsPopup = null;
+            _settingsPopup = null;
         }
     }
 }

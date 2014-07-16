@@ -32,7 +32,6 @@ Mount & Blade Warband Server GUI is just that a UI created to help start/run Mou
 
 C# WPF based application using the following from NuGet
 - [SQL Lite](http://www.nuget.org/packages/System.Data.SQLite.Core/)
-- [Entity Framework](http://www.nuget.org/packages/EntityFramework/)
 
 You will also need a local copy of the dedicated server files from TaleWorlds
 - [Dedicated Server Files](http://download2.taleworlds.com/mb_warband_dedicated_1158.zip)
