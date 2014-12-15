@@ -43,7 +43,7 @@ namespace Mount_and_Blade_Server_Panel
             Populate_GameModes();
             UIVersionTextBlock.Content = "UI Version " + Assembly.GetExecutingAssembly().GetName().Version;
             Settings.Default.InstallFolder =
-                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Mount&BladeServerFiles");
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Mount and Blade Server Panel");
             Settings.Default.PropertyChanged += SettingsChanged;
             _serverFilesList = GetServerFiles();
             _worker = new BackgroundWorker();
@@ -83,12 +83,14 @@ namespace Mount_and_Blade_Server_Panel
                             InstalledServerTextBlock.Content = ServerVersionTextLabel.Content = _serverInstallStatus;
                             InstalledServerTextBlock.Foreground = ServerVersionTextLabel.Foreground = _serverInstallStatusColor;
                             ServerEXETextBox.Text = Settings.Default.ServerExeLocation;
+                            UninstallServerButton.IsEnabled = true;
                         }
                         else
                         {
                             InstalledServerTextBlock.Content = ServerVersionTextLabel.Content = _serverInstallStatus;
                             InstalledServerTextBlock.Foreground = ServerVersionTextLabel.Foreground = _serverInstallStatusColor;
                             ServerEXETextBox.Text = "Double Click to select";
+                            UninstallServerButton.IsEnabled = false;
                         }
                     },
                     DispatcherPriority.Normal);
@@ -170,26 +172,27 @@ namespace Mount_and_Blade_Server_Panel
             var request = (FtpWebRequest) WebRequest.Create(Settings.Default.FilesURI);
             request.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
             request.Credentials = new NetworkCredential("anonymous", "anonymous");
-
-            var response = (FtpWebResponse) request.GetResponse();
-
-            var responseStream = response.GetResponseStream();
-            char[] splitter = {' '};
             var itemsList = new List<string>();
 
-            if (responseStream == null) return itemsList;
-            using (var reader = new StreamReader(responseStream))
+            using (var response = (FtpWebResponse) request.GetResponse())
             {
-                string line;
-                while ((line = reader.ReadLine()) != null)
+                using (var responseStream = response.GetResponseStream())
                 {
-                    var items = line.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
-                    itemsList.AddRange(
-                        items.Where(item => item.Contains("zip") && item.Contains("mb_warband_dedicated")));
+                    char[] splitter = {' '};
+
+                    if (responseStream == null) return itemsList;
+                    using (var reader = new StreamReader(responseStream))
+                    {
+                        string line;
+                        while ((line = reader.ReadLine()) != null)
+                        {
+                            var items = line.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
+                            itemsList.AddRange(
+                                items.Where(item => item.Contains("zip") && item.Contains("mb_warband_dedicated")));
+                        }
+                    }
                 }
             }
-            response.Close();
-            responseStream.Close();
 
             return itemsList;
         }
@@ -223,19 +226,44 @@ namespace Mount_and_Blade_Server_Panel
             CancelDownloadButton.IsEnabled = false;
         }
 
+        /// <summary>
+        /// Uninstall local server files
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <returns></returns>
+        private void UninstallServer_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Uninstall_Server();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                throw;
+            }
+
+        }
+
+        private void Uninstall_Server()
+        {
+            if (Directory.Exists(Settings.Default.InstallFolder))
+            {
+                Directory.Delete(Settings.Default.InstallFolder, true);
+                Settings.Default.ServerVersion = 0;
+                Settings.Default.ServerExeLocation = "";
+            }
+        }
+
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
             InstallServer((string) e.Argument);
-            Dispatcher.Invoke(() =>
-            {
-                ServerVersionTextLabel.Content = InstalledServerTextBlock.Content = "No Server Installed";
-                ServerVersionTextLabel.Foreground = InstalledServerTextBlock.Foreground = Brushes.Red;
-            }, DispatcherPriority.Normal);
         }
 
         private void Worker_RunWorkerCompleted(object sender, AsyncCompletedEventArgs e)
         {
-            if (!e.Cancelled)
+            if (!_worker.CancellationPending)
             {
                 ServerFilesButton.IsEnabled = true;
                 CancelDownloadButton.IsEnabled = false;
@@ -284,12 +312,9 @@ namespace Mount_and_Blade_Server_Panel
                 MessageBox.Show("Server Version not recognized. Please try to reinstall");
             }
 
-            Settings.Default.ServerVersion = serverVersion;
+            Uninstall_Server();
 
-            if (Directory.Exists(Settings.Default.InstallFolder))
-            {
-                Directory.Delete(Settings.Default.InstallFolder, true);
-            }
+            Settings.Default.ServerVersion = serverVersion;
 
             long fileSize;
             var networkCred = new NetworkCredential("anonymous", "anonymous");
@@ -329,6 +354,7 @@ namespace Mount_and_Blade_Server_Panel
                             }
                             else
                             {
+                                Settings.Default.ServerVersion = 0;
                                 return;
                             }
                         }
@@ -353,6 +379,7 @@ namespace Mount_and_Blade_Server_Panel
                     if (item.Contains("mb_warband_dedicated.exe"))
                     {
                         Settings.Default.ServerExeLocation = item;
+                        return;
                     }
                 }
             }
@@ -421,12 +448,13 @@ namespace Mount_and_Blade_Server_Panel
         {
             if (ServerSettingsFlyout.IsOpen)
                 ServerSettingsFlyout.IsOpen = false;
-            ServerFilesFlyout.IsOpen = true;
+            ServerInstallFlyout.IsOpen = true;
             if (ServerFilesComboBox.Items.Count > 0) return;
             foreach (var file in _serverFilesList)
             {
                 ServerFilesComboBox.Items.Add(file);
             }
+            ServerFilesComboBox.SelectedIndex = ServerFilesComboBox.Items.Count - 1;
             ServerVersionTextLabel.Content = _serverInstallStatus;
             ServerVersionTextLabel.Foreground = _serverInstallStatusColor;
         }
@@ -438,8 +466,8 @@ namespace Mount_and_Blade_Server_Panel
         /// <param name="e"></param>
         private void FileSettings_Click(object sender, RoutedEventArgs e)
         {
-            if (ServerFilesFlyout.IsOpen)
-                ServerFilesFlyout.IsOpen = false;
+            if (ServerInstallFlyout.IsOpen)
+                ServerInstallFlyout.IsOpen = false;
             ServerSettingsFlyout.IsOpen = true;
         }
 
