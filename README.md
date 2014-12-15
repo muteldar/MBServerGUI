@@ -20,14 +20,6 @@ Mount & Blade Warband Server GUI is just that a UI created to help start/run Mou
 
 >set_combat_speed takes an INT which is checked for however only 0,2,4 are valid settings. There is no validation yet to say only 0,2,4 are allowed you will have to validate values for now.
 
-
-##Screen Shot
-
-
-![alt tag](http://n00bworks.com/img/MBServerGUI.PNG)
-
-
-
 ##Running from source
 
 C# WPF based application using the following from NuGet
@@ -35,3 +27,7 @@ C# WPF based application using the following from NuGet
 
 You will also need a local copy of the dedicated server files from TaleWorlds
 - [Dedicated Server Files](http://download2.taleworlds.com/mb_warband_dedicated_1158.zip)
+
+##Development Branch
+
+ Check out the Development Branch for the latest build of the Server GUI.
