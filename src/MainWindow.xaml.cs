@@ -258,7 +258,13 @@ namespace Mount_and_Blade_Server_Panel
 
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            InstallServer((string) e.Argument);
+            var steam = false;
+            Dispatcher.Invoke(() =>
+            {
+                steam = SteamEdition.IsChecked != null && (bool) SteamEdition.IsChecked;
+                SteamEdition.IsEnabled = false;
+            }, DispatcherPriority.Normal);
+            InstallServer((string) e.Argument, steam);
         }
 
         private void Worker_RunWorkerCompleted(object sender, AsyncCompletedEventArgs e)
@@ -275,6 +281,12 @@ namespace Mount_and_Blade_Server_Panel
                 CancelDownloadButton.IsEnabled = false;
                 ProgressBarDownload.Value = 0;
             }
+
+            Dispatcher.Invoke(() =>
+            {
+                SteamEdition.IsEnabled = true;
+                SteamEdition.IsChecked = false;
+            }, DispatcherPriority.Normal);
         }
 
         private void Worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -286,7 +298,8 @@ namespace Mount_and_Blade_Server_Panel
         /// Download and Install Server files
         /// </summary>
         /// <param name="file">File name to download</param>
-        private void InstallServer(string file)
+        /// <param name="steam">Install Steam server or not</param>
+        private void InstallServer(string file, bool steam)
         {
             if (!NetworkInterface.GetIsNetworkAvailable())
             {
@@ -367,6 +380,8 @@ namespace Mount_and_Blade_Server_Panel
 
             var subDirs = Directory.GetDirectories(Settings.Default.InstallFolder);
 
+            var exeType = steam ? "mb_warband_dedicated.exe" : "mb_warband_dedicated_steam.exe";
+
             foreach (var dir in subDirs)
             {
                 if (dir.Contains("Modules"))
@@ -376,7 +391,7 @@ namespace Mount_and_Blade_Server_Panel
                 var files = Directory.GetFiles(dir);
                 foreach (var item in files)
                 {
-                    if (item.Contains("mb_warband_dedicated.exe"))
+                    if (item.Contains(exeType))
                     {
                         Settings.Default.ServerExeLocation = item;
                         return;

@@ -43,7 +43,7 @@
                     <ComboBox x:Name="ServerFilesComboBox" Height="35" Width="425" FontSize="18" Foreground="Black"/>
                     <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Left"  MinWidth="450">
                         <Label x:Name="SteamEditionLabel" Content="Install Steam Edition" Foreground="Black" FontSize="15"/>
-                        <CheckBox x:Name="SteamEdition"/>
+                        <CheckBox x:Name="SteamEdition" IsChecked="False"/>
                     </WrapPanel>
                     <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Left" MinWidth="450">
                         <Button x:Name="ServerFilesButton" Content="Install Server" Width="100" Click="ServerDownload_Click" Margin="10,10,0,0"/>
