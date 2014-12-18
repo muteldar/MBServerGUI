@@ -204,14 +204,12 @@ namespace Mount_and_Blade_Server_Panel
         /// <param name="e"></param>
         private void ServerDownload_Click(object sender, RoutedEventArgs e)
         {
-            if (ServerFilesComboBox.SelectedValue != null)
-            {
-                ServerFilesButton.IsEnabled = false;
-                CancelDownloadButton.IsEnabled = true;
-                _worker.RunWorkerAsync(ServerFilesComboBox.SelectedValue.ToString());
-                ServerVersionTextLabel.Content = InstalledServerTextBlock.Content = "Installing Server";
-                ServerVersionTextLabel.Foreground = InstalledServerTextBlock.Foreground = Brushes.GreenYellow; 
-            }
+            if (ServerFilesComboBox.SelectedValue == null) return;
+            ServerFilesButton.IsEnabled = false;
+            CancelDownloadButton.IsEnabled = true;
+            _worker.RunWorkerAsync(ServerFilesComboBox.SelectedValue.ToString());
+            ServerVersionTextLabel.Content = InstalledServerTextBlock.Content = "Installing Server";
+            ServerVersionTextLabel.Foreground = InstalledServerTextBlock.Foreground = Brushes.GreenYellow;
         }
 
         /// <summary>
@@ -224,6 +222,8 @@ namespace Mount_and_Blade_Server_Panel
             _worker.CancelAsync();
             ServerFilesButton.IsEnabled = true;
             CancelDownloadButton.IsEnabled = false;
+            ServerVersionTextLabel.Content = InstalledServerTextBlock.Content = _serverInstallStatus;
+            ServerVersionTextLabel.Foreground = InstalledServerTextBlock.Foreground = _serverInstallStatusColor;
         }
 
         /// <summary>
@@ -246,14 +246,12 @@ namespace Mount_and_Blade_Server_Panel
 
         }
 
-        private void Uninstall_Server()
+        private static void Uninstall_Server()
         {
-            if (Directory.Exists(Settings.Default.InstallFolder))
-            {
-                Directory.Delete(Settings.Default.InstallFolder, true);
-                Settings.Default.ServerVersion = 0;
-                Settings.Default.ServerExeLocation = "";
-            }
+            if (!Directory.Exists(Settings.Default.InstallFolder)) return;
+            Directory.Delete(Settings.Default.InstallFolder, true);
+            Settings.Default.ServerVersion = 0;
+            Settings.Default.ServerExeLocation = "";
         }
 
         private void Worker_DoWork(object sender, DoWorkEventArgs e)

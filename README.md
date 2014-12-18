@@ -1,8 +1,6 @@
 Mount & Blade Warband Server Panel (GUI)
 ===
 
-This is the dev branch so expect breaking changes for the foreseeable future.
-
 Mount & Blade Warband Server Panel (GUI) is just that a UI created to help start/run Mount & Blade Warband servers without having to create separate config files/bat files. It is very much still in development but should contain the following list of features when done.
 
 - Installing via some other method than source build.
