@@ -16,6 +16,7 @@ Mount & Blade Warband Server Panel (GUI) is just that a UI created to help start
 * Settings are now working.
   * Basic Validation is set-up (checks if INT/BOOL/String)
   * Settings still need to be validated (check for actual value as the server configs take some odd values.)
+* Wix install package (*.msi) [Download Here](http://n00bworks.com/MBServerPanel/releases/MBServerPanelInstall.msi)
 
 ##What Doesn't
 
