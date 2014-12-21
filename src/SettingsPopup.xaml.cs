@@ -90,6 +90,7 @@ namespace Mount_and_Blade_Server_Panel
                         }
                     }
                 }
+                SettingValueTextBox.Text = "";
             }
         }
 
