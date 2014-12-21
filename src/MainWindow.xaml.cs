@@ -249,9 +249,18 @@ namespace Mount_and_Blade_Server_Panel
         private static void Uninstall_Server()
         {
             if (!Directory.Exists(Settings.Default.InstallFolder)) return;
-            Directory.Delete(Settings.Default.InstallFolder, true);
-            Settings.Default.ServerVersion = 0;
-            Settings.Default.ServerExeLocation = "";
+            try
+            {
+                Directory.Delete(Settings.Default.InstallFolder, true);
+                Settings.Default.ServerVersion = 0;
+                Settings.Default.ServerExeLocation = "";
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                throw;
+            }
+
         }
 
         private void Worker_DoWork(object sender, DoWorkEventArgs e)
@@ -366,6 +375,11 @@ namespace Mount_and_Blade_Server_Panel
                             else
                             {
                                 Settings.Default.ServerVersion = 0;
+                                writer.Close();
+                                if (File.Exists(file))
+                                {
+                                    File.Delete(file);
+                                }
                                 return;
                             }
                         }
@@ -389,11 +403,9 @@ namespace Mount_and_Blade_Server_Panel
                 var files = Directory.GetFiles(dir);
                 foreach (var item in files)
                 {
-                    if (item.Contains(exeType))
-                    {
-                        Settings.Default.ServerExeLocation = item;
-                        return;
-                    }
+                    if (!item.Contains(exeType)) continue;
+                    Settings.Default.ServerExeLocation = item;
+                    return;
                 }
             }
         }
