@@ -44,7 +44,7 @@ Check out the changelog.md for more specific details on the latest changes/issue
 
 ##Screen Shot
 
-![MB Screen](http://n00bworks.com/img/MBScreen.PNG)
+![MBServerGUI Screen](http://n00bworks.com/img/MBScreen.PNG)
 
 ##Running from source
 
