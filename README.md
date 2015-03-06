@@ -44,7 +44,7 @@ Check out the changelog.md for more specific details on the latest changes/issue
 
 ##Screen Shot
 
-![alt tag](http://n00bworks.com/img/MBScreen.PNG)
+![MB Screen](http://n00bworks.com/img/MBScreen.PNG)
 
 ##Running from source
 
