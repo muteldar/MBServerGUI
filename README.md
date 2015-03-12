@@ -21,7 +21,6 @@ Mount & Blade Warband Server Panel (GUI) is just that a UI created to help start
 ##What Doesn't
 
 * No saving of configs.
-* No good way of installing.
 * Module tweaks for non native modules.
 
 ##Other Details
