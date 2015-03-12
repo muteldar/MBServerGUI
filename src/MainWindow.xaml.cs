@@ -324,12 +324,12 @@ namespace Mount_and_Blade_Server_Panel
                 }
                 catch
                 {
-                    MessageBox.Show("Server Version not recognized. Please try to reinstall");
+                    MessageBox.Show("Server Version not recognized. Please try a reinstall");
                 }
             }
             else
             {
-                MessageBox.Show("Server Version not recognized. Please try to reinstall");
+                MessageBox.Show("Server Version not recognized. Please try a reinstall");
             }
 
             Uninstall_Server();
@@ -438,9 +438,10 @@ namespace Mount_and_Blade_Server_Panel
                         AddSettingButton.IsEnabled = false;
                         RemoveSettingButton.IsEnabled = false;
                     }
-                    catch
+                    catch(Exception ex)
                     {
-                        MessageBox.Show("ServerProcess didn't Start :" + _serverProcess.ProcessName);
+                        MessageBox.Show("ServerProcess didn't Start :" + _serverProcess.ProcessName + " Error : " + ex.Message);
+                        throw;
                     }
                 }
             }
