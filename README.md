@@ -41,17 +41,6 @@ Check out the changelog.md for more specific details on the latest changes/issue
 
 >set_combat_speed takes an INT which is checked for however only 0,2,4 are valid settings. There is no validation yet to say only 0,2,4 are allowed you will have to validate values for now.
 
-## Screen Shots
-
-### Screen One
-![MBServerGUI Screen](http://n00bworks.com/img/screen_one.png)
-
-### Screen Two
-![MBServerGUI Screen](http://n00bworks.com/img/screen_two.png)
-
-### Screen Three
-![MBServerGUI Screen](http://n00bworks.com/img/screen_three.png)
-
 ## Running from source
 
 This project should compile and run with no issues from source.
