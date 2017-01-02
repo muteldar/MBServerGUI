@@ -114,11 +114,11 @@ namespace Mount_and_Blade_Server_Panel
         /// <param name="e"></param>
         private void ServerEXETextBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            var dialog = new OpenFileDialog { DefaultExt = ".exe", Filter = "Executables (.exe)|*.exe"};
+            var dialog = new OpenFileDialog { DefaultExt = ".exe", Filter = "Executables (.exe)|*.exe" };
             var result = dialog.ShowDialog();
             if (result != true) return;
             var fileInfo = FileVersionInfo.GetVersionInfo(dialog.FileName);
-            if(fileInfo.ProductName.Contains("Mount&Blade: Warband"))
+            if (fileInfo.ProductName.Contains("Mount&Blade: Warband"))
             {
                 Settings.Default.ServerVersion = 9999;
                 ServerEXETextBox.Text = dialog.FileName;
@@ -182,7 +182,7 @@ namespace Mount_and_Blade_Server_Panel
                 itemsList.Add(toAdd.Last());
                 return itemsList;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
                 throw;
@@ -259,10 +259,10 @@ namespace Mount_and_Blade_Server_Panel
             var steam = false;
             Dispatcher.Invoke(() =>
             {
-                steam = SteamEdition.IsChecked != null && (bool) SteamEdition.IsChecked;
+                steam = SteamEdition.IsChecked != null && (bool)SteamEdition.IsChecked;
                 SteamEdition.IsEnabled = false;
             }, DispatcherPriority.Normal);
-            InstallServer((string) e.Argument, steam);
+            InstallServer((string)e.Argument, steam);
         }
 
         private void Worker_RunWorkerCompleted(object sender, AsyncCompletedEventArgs e)
@@ -329,15 +329,15 @@ namespace Mount_and_Blade_Server_Panel
 
             long fileSize = 100000000;
 
-            var request = (HttpWebRequest) WebRequest.Create(Settings.Default.DownloadURI);
+            var request = (HttpWebRequest)WebRequest.Create(Settings.Default.DownloadURI);
             request.Method = WebRequestMethods.Http.Get;
 
-            using (var response = (HttpWebResponse) request.GetResponse())
+            using (var response = (HttpWebResponse)request.GetResponse())
             {
                 var responseStream = response.GetResponseStream();
                 using (var writer = new FileStream(file, FileMode.Create))
                 {
-                    const int bufferSize = 32*1024;
+                    const int bufferSize = 32 * 1024;
 
                     var buffer = new byte[bufferSize];
 
@@ -346,11 +346,11 @@ namespace Mount_and_Blade_Server_Panel
                         var readCount = responseStream.Read(buffer, 0, bufferSize);
                         while (readCount > 0)
                         {
-                            if(!_worker.CancellationPending)
+                            if (!_worker.CancellationPending)
                             {
                                 writer.Write(buffer, 0, readCount);
                                 readCount = responseStream.Read(buffer, 0, bufferSize);
-                                _worker.ReportProgress((int) Math.Round(100*((float) writer.Length/fileSize), 0));
+                                _worker.ReportProgress((int)Math.Round(100 * ((float)writer.Length / fileSize), 0));
                             }
                             else
                             {
@@ -402,7 +402,7 @@ namespace Mount_and_Blade_Server_Panel
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void LaunchButton_Click(object sender, RoutedEventArgs e)
-        {  
+        {
             Build_Settings();
             if (Settings.Default.Debug)
             {
@@ -563,9 +563,9 @@ namespace Mount_and_Blade_Server_Panel
         {
             foreach (Window window in Application.Current.Windows)
             {
-                if (window.GetType() == typeof (SettingsPopup))
+                if (window.GetType() == typeof(SettingsPopup))
                 {
-                    window.Close();   
+                    window.Close();
                 }
             }
         }

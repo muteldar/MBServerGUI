@@ -9,7 +9,7 @@ Mount & Blade Warband Server Panel (GUI) is just that a UI created to help start
 - Download and install server files from Taleworlds FTP.
 - Save/Load server configs.
 
-##What Works Now
+## What Works Now
 
 * Can Launch server with module and game mode selected.
 * Can Install server files from the taleworlds FTP
@@ -18,17 +18,16 @@ Mount & Blade Warband Server Panel (GUI) is just that a UI created to help start
   * Settings still need to be validated (check for actual value as the server configs take some odd values.)
 * Wix install package (*.msi) [Download Here](http://n00bworks.com/MBServerPanel/releases/MBServerPanelInstall.msi)
 
-##What Doesn't
+## What Doesn't
 
 * No saving of configs.
-* No good way of installing.
 * Module tweaks for non native modules.
 
-##Other Details
+## Other Details
 
 Check out the changelog.md for more specific details on the latest changes/issues with the development branch.
-  
-##Good to Know 
+
+## Good to Know
 
 * There is a minimum of settings needed to start a specific type of game mode.
 
@@ -36,19 +35,15 @@ Check out the changelog.md for more specific details on the latest changes/issue
 
 >you will need to add settings for password/name/steamport/port/maps/factions etc.
 
-* There is no setting specific validation implemented yet. 
+* There is no setting specific validation implemented yet.
 
 **Example**
 
 >set_combat_speed takes an INT which is checked for however only 0,2,4 are valid settings. There is no validation yet to say only 0,2,4 are allowed you will have to validate values for now.
 
-##Screen Shot
+## Running from source
 
-![alt tag](http://n00bworks.com/img/MBScreen.PNG)
-
-##Running from source
-
-Right now this project will need to be checked out and built from source/resolve nuget dependencies. Eventually this should be a packaged msi or something of the sort to install and run.
+This project should compile and run with no issues from source.
 
 C# WPF based application using the following from NuGet
 - [Mah Apps](http://mahapps.com/)
