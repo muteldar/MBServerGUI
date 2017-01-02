@@ -1,7 +1,7 @@
-Mount & Blade Warband Server Panel (GUI)
+Mount & Blade Warband Server Panel
 ===
 
-Mount & Blade Warband Server Panel (GUI) is just that a UI created to help start/run Mount & Blade Warband servers without having to create separate config files/bat files. It is very much still in development but should contain the following list of features when done.
+Mount & Blade Warband Server Panel is just that a UI created to help start/run Mount & Blade Warband servers without having to create separate config files/bat files. It is very much still in development but should contain the following list of features when done.
 
 - Installing via some other method than source build.
 - Launch any Module that is out there for Mount & Blade Warband
@@ -16,7 +16,7 @@ Mount & Blade Warband Server Panel (GUI) is just that a UI created to help start
 * Settings are now working.
   * Basic Validation is set-up (checks if INT/BOOL/String)
   * Settings still need to be validated (check for actual value as the server configs take some odd values.)
-* Wix install package (*.msi) [Download Here](http://n00bworks.com/MBServerPanel/releases/MBServerPanelInstall.msi)
+* Wix install package (*.msi) [Download Here](https://s3.amazonaws.com/mountandbladeserverpanel/installer/MBServerPanelInstall.msi)
 
 ## What Doesn't
 
