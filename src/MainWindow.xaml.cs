@@ -5,7 +5,6 @@ using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Reflection;
@@ -20,6 +19,7 @@ using Application = System.Windows.Application;
 using MessageBox = System.Windows.MessageBox;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 using Path = System.IO.Path;
+using System.Linq;
 
 namespace Mount_and_Blade_Server_Panel
 {
@@ -96,8 +96,13 @@ namespace Mount_and_Blade_Server_Panel
                     DispatcherPriority.Normal);
                     break;
                 case "ModulesLocation":
-                    ModulesTextBox.Clear();
-                    ModulesTextBox.Text = Settings.Default.ModulesLocation;
+                    Dispatcher.Invoke(() =>
+                    {
+                        ModulesTextBox.Clear();
+                        ModulesTextBox.Text = Settings.Default.ModulesLocation;
+                        GetModules();
+                    },
+                    DispatcherPriority.Send);
                     break;
             }
         }
@@ -109,11 +114,11 @@ namespace Mount_and_Blade_Server_Panel
         /// <param name="e"></param>
         private void ServerEXETextBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            var dialog = new OpenFileDialog { DefaultExt = ".exe", Filter = "Executables (.exe)|*.exe"};
+            var dialog = new OpenFileDialog { DefaultExt = ".exe", Filter = "Executables (.exe)|*.exe" };
             var result = dialog.ShowDialog();
             if (result != true) return;
             var fileInfo = FileVersionInfo.GetVersionInfo(dialog.FileName);
-            if(fileInfo.ProductName.Contains("Mount&Blade: Warband"))
+            if (fileInfo.ProductName.Contains("Mount&Blade: Warband"))
             {
                 Settings.Default.ServerVersion = 9999;
                 ServerEXETextBox.Text = dialog.FileName;
@@ -169,32 +174,19 @@ namespace Mount_and_Blade_Server_Panel
         /// <returns>List of strings of Dedicated Server Files</returns>
         private static List<string> GetServerFiles()
         {
-            var request = (FtpWebRequest) WebRequest.Create(Settings.Default.FilesURI);
-            request.Method = WebRequestMethods.Ftp.ListDirectoryDetails;
-            request.Credentials = new NetworkCredential("anonymous", "anonymous");
             var itemsList = new List<string>();
-
-            using (var response = (FtpWebResponse) request.GetResponse())
+            try
             {
-                using (var responseStream = response.GetResponseStream())
-                {
-                    char[] splitter = {' '};
-
-                    if (responseStream == null) return itemsList;
-                    using (var reader = new StreamReader(responseStream))
-                    {
-                        string line;
-                        while ((line = reader.ReadLine()) != null)
-                        {
-                            var items = line.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
-                            itemsList.AddRange(
-                                items.Where(item => item.Contains("zip") && item.Contains("mb_warband_dedicated")));
-                        }
-                    }
-                }
+                char[] splitter = { '/' };
+                var toAdd = Settings.Default.DownloadURI.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
+                itemsList.Add(toAdd.Last());
+                return itemsList;
             }
-
-            return itemsList;
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                throw;
+            }
         }
 
         /// <summary>
@@ -243,7 +235,6 @@ namespace Mount_and_Blade_Server_Panel
                 MessageBox.Show(ex.Message);
                 throw;
             }
-
         }
 
         private static void Uninstall_Server()
@@ -268,10 +259,10 @@ namespace Mount_and_Blade_Server_Panel
             var steam = false;
             Dispatcher.Invoke(() =>
             {
-                steam = SteamEdition.IsChecked != null && (bool) SteamEdition.IsChecked;
+                steam = SteamEdition.IsChecked != null && (bool)SteamEdition.IsChecked;
                 SteamEdition.IsEnabled = false;
             }, DispatcherPriority.Normal);
-            InstallServer((string) e.Argument, steam);
+            InstallServer((string)e.Argument, steam);
         }
 
         private void Worker_RunWorkerCompleted(object sender, AsyncCompletedEventArgs e)
@@ -320,44 +311,33 @@ namespace Mount_and_Blade_Server_Panel
             {
                 try
                 {
-                    Int32.TryParse(fileParts[fileParts.Length - 1].Split('.')[0], out serverVersion);
+                    int.TryParse(fileParts[fileParts.Length - 1].Split('.')[0], out serverVersion);
                 }
                 catch
                 {
-                    MessageBox.Show("Server Version not recognized. Please try a reinstall");
+                    MessageBox.Show("Server Version not recognized. Please try to reinstall");
                 }
             }
             else
             {
-                MessageBox.Show("Server Version not recognized. Please try a reinstall");
+                MessageBox.Show("Server Version not recognized. Please try to reinstall");
             }
 
             Uninstall_Server();
 
             Settings.Default.ServerVersion = serverVersion;
 
-            long fileSize;
-            var networkCred = new NetworkCredential("anonymous", "anonymous");
-            var sizeRequest = (FtpWebRequest) WebRequest.Create(Settings.Default.FilesURI + file);
-            sizeRequest.Method = WebRequestMethods.Ftp.GetFileSize;
-            sizeRequest.Credentials = networkCred;
-            using (var sizeResponse = sizeRequest.GetResponse())
-            {
-                fileSize = sizeResponse.ContentLength;
-            }
+            long fileSize = 100000000;
 
-            var request = (FtpWebRequest) WebRequest.Create(Settings.Default.FilesURI + file);
+            var request = (HttpWebRequest)WebRequest.Create(Settings.Default.DownloadURI);
+            request.Method = WebRequestMethods.Http.Get;
 
-            request.Method = WebRequestMethods.Ftp.DownloadFile;
-            request.UseBinary = true;
-            request.Credentials = networkCred;
-
-            using (var response = (FtpWebResponse) request.GetResponse())
+            using (var response = (HttpWebResponse)request.GetResponse())
             {
                 var responseStream = response.GetResponseStream();
                 using (var writer = new FileStream(file, FileMode.Create))
                 {
-                    const int bufferSize = 32*1024;
+                    const int bufferSize = 32 * 1024;
 
                     var buffer = new byte[bufferSize];
 
@@ -366,11 +346,11 @@ namespace Mount_and_Blade_Server_Panel
                         var readCount = responseStream.Read(buffer, 0, bufferSize);
                         while (readCount > 0)
                         {
-                            if(!_worker.CancellationPending)
+                            if (!_worker.CancellationPending)
                             {
                                 writer.Write(buffer, 0, readCount);
                                 readCount = responseStream.Read(buffer, 0, bufferSize);
-                                _worker.ReportProgress((int) Math.Round(100*((float) writer.Length/fileSize), 0));
+                                _worker.ReportProgress((int)Math.Round(100 * ((float)writer.Length / fileSize), 0));
                             }
                             else
                             {
@@ -390,23 +370,29 @@ namespace Mount_and_Blade_Server_Panel
 
             ZipFile.ExtractToDirectory(file, Settings.Default.InstallFolder);
 
-            var subDirs = Directory.GetDirectories(Settings.Default.InstallFolder);
+            var topDir = Directory.GetDirectories(Settings.Default.InstallFolder);
+            //
+            // Assuming its the only directory ¯\_(ツ)_/¯
+            //
+            var subDirs = Directory.GetDirectories(topDir[0]);
+            var files = Directory.GetFiles(topDir[0]);
 
-            var exeType = steam ? "mb_warband_dedicated.exe" : "mb_warband_dedicated_steam.exe";
+            var exeType = "mb_warband_dedicated.exe";
 
             foreach (var dir in subDirs)
             {
+                Console.WriteLine(dir);
                 if (dir.Contains("Modules"))
                 {
                     Settings.Default.ModulesLocation = dir;
                 }
-                var files = Directory.GetFiles(dir);
-                foreach (var item in files)
-                {
-                    if (!item.Contains(exeType)) continue;
-                    Settings.Default.ServerExeLocation = item;
-                    return;
-                }
+            }
+
+            foreach (var item in files)
+            {
+                if (!item.Contains(exeType)) continue;
+                Settings.Default.ServerExeLocation = item;
+                return;
             }
         }
 
@@ -416,7 +402,7 @@ namespace Mount_and_Blade_Server_Panel
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void LaunchButton_Click(object sender, RoutedEventArgs e)
-        {  
+        {
             Build_Settings();
             if (Settings.Default.Debug)
             {
@@ -438,10 +424,9 @@ namespace Mount_and_Blade_Server_Panel
                         AddSettingButton.IsEnabled = false;
                         RemoveSettingButton.IsEnabled = false;
                     }
-                    catch(Exception ex)
+                    catch
                     {
-                        MessageBox.Show("ServerProcess didn't Start :" + _serverProcess.ProcessName + " Error : " + ex.Message);
-                        throw;
+                        MessageBox.Show("ServerProcess didn't Start :" + _serverProcess.ProcessName);
                     }
                 }
             }
@@ -545,7 +530,7 @@ namespace Mount_and_Blade_Server_Panel
         /// </summary>
         private void Build_Settings()
         {
-            if (Settings.Default.ServerExeLocation != "" || Settings.Default.SteamServerExeLocation != "")
+            if (Settings.Default.ServerExeLocation != "")
             {
                 if (Settings.Default.ModulesLocation != "")
                 {
@@ -578,9 +563,9 @@ namespace Mount_and_Blade_Server_Panel
         {
             foreach (Window window in Application.Current.Windows)
             {
-                if (window.GetType() == typeof (SettingsPopup))
+                if (window.GetType() == typeof(SettingsPopup))
                 {
-                    window.Close();   
+                    window.Close();
                 }
             }
         }

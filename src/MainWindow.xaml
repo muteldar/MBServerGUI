@@ -80,10 +80,10 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button x:Name="AddSettingButton" Content="Add Setting" HorizontalAlignment="Left" Width="118" Margin="10,447,0,42" Click="Add_SettingClick" FontSize="16" FontWeight="Bold" />
-        <Button x:Name="RemoveSettingButton" Content="Remove Setting" HorizontalAlignment="Left" Width="144" Margin="139,447,0,42" Click="Remove_SettingClick" FontSize="16" FontWeight="Bold" />
-        <Button x:Name="RemoveAllSettingsButton" Content="Remove All Settings" HorizontalAlignment="Left" Width="180" Margin="293,447,0,42" FontSize="16" FontWeight="Bold" />
-        <Button x:Name="LaunchButton" Margin="834,447,10,42" Width="100" Click="LaunchButton_Click" FontSize="16" FontWeight="Bold" Content="Launch"/>
+        <Button x:Name="AddSettingButton" Content="Add Setting" HorizontalAlignment="Left" Width="118" Margin="10,447,0,32" Click="Add_SettingClick" FontSize="16" FontWeight="Bold" />
+        <Button x:Name="RemoveSettingButton" Content="Remove Setting" HorizontalAlignment="Left" Width="144" Margin="139,447,0,32" Click="Remove_SettingClick" FontSize="16" FontWeight="Bold" />
+        <Button x:Name="RemoveAllSettingsButton" Content="Remove All Settings" HorizontalAlignment="Left" Width="180" Margin="293,447,0,32" FontSize="16" FontWeight="Bold" />
+        <Button x:Name="LaunchButton" Margin="834,447,6,32" Width="100" Click="LaunchButton_Click" FontSize="16" FontWeight="Bold" Content="Launch"/>
         <Label x:Name="UIVersionTextBlock" HorizontalAlignment="Left" Margin="10,491,0,0" Content="TextBlock" VerticalAlignment="Top" Width="167" Foreground="White" FontSize="16"/>
         <Label x:Name="InstalledServerTextBlock" Margin="182,491,0,0" Content="No Server Installed" VerticalAlignment="Top" Width="267" Foreground="Red" FontSize="16" HorizontalAlignment="Left" />
     </Grid>
